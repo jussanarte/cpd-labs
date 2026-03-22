@@ -1,0 +1,78 @@
+### --- C/C++ STANDARD --- ###
+# Ficheiros Objeto e Dependency files
+*.o
+*.ko
+*.obj
+*.elf
+*.d
+
+# Bibliotecas e Arquivos
+*.lib
+*.a
+*.la
+*.lo
+
+# Shared objects (Linux/Windows/macOS)
+*.dll
+*.so
+*.so.*
+*.dylib
+
+# Executáveis (Inlcui o teu 'main' e outros comuns)
+main
+*.exe
+*.out
+*.app
+*.i*86
+*.x86_64
+*.hex
+
+### --- DEBUG & PROFILING --- ###
+# Ficheiros de Debug e Core Dumps (Essencial para o teu trabalho com GDB)
+core
+core.*
+*.dSYM/
+*.su
+*.idb
+*.pdb
+*.dwo
+gmon.out
+
+### --- COMPILADORES & BUILD TOOLS --- ###
+# Precompiled Headers
+*.gch
+*.pch
+
+# Linker output
+*.ilk
+*.map
+*.exp
+
+# Kernel & Modules
+*.mod*
+*.cmd
+.tmp_versions/
+modules.order
+Module.symvers
+Mkfile.old
+dkms.conf
+
+### --- IDE & SYSTEM --- ###
+# Visual Studio Code (Configurações locais)
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# Linux/macOS System files
+.DS_Store
+.directory
+*~
+*.swp
+*.swo
+
+### --- LOGS & TEMPS --- ###
+*.log
+*.tmp
+*.temp
