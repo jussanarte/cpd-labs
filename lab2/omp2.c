@@ -41,21 +41,32 @@ int main(int argc, char *argv[])
     V[i] = 0.0 + i;
   }
 
+  /* 1.1. USING DOUBLE BUFFERING */
+  double *V_read = V;
+  double *V_write = V_aux;
+
   /* 2. ITERATIONS LOOP */
   //* Can't put the diretive here since it will cause overhead and the program will be slower than serial version.
   for (iter = 0; iter < NUMITER; iter++)
   {
-
     /* 2.1. PROCESS ELEMENTS */
-#pragma omp parallel for
-    for (int k = 0; k < TOTALSIZE; k++)
-      V_aux[k] = V[k];
+    /*
+      #pragma omp parallel for
+      for (int k = 0; k < TOTALSIZE; k++)
+        V_aux[k] = V[k];
+    */
 
-#pragma omp parallel for
+#pragma omp parallel for private(i)
     for (i = 0; i < TOTALSIZE - 1; i++)
     {
-      V[i] = f(V[i], V[i + 1]);
+      V_write[i] = f(V_read[i], V_read[i + 1]);
     }
+
+
+    //* We revert the roles for next 'iter'
+    double *temp = V_read;
+    V_read = V_write;
+    V_write = temp;
 
     /* 2.2. END ITERATIONS LOOP */
   }
@@ -64,6 +75,6 @@ int main(int argc, char *argv[])
   printf("Output:\n");
   for (i = 0; i < TOTALSIZE; i++)
   {
-    printf("%4d %f\n", i, V[i]);
+    printf("%4d %f\n", i, V_read[i]);
   }
 }
