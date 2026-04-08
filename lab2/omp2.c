@@ -34,6 +34,9 @@ int main(int argc, char *argv[])
   /* DECLARE VECTOR AND AUX DATA STRUCTURES */
   double *V = (double *)malloc(TOTALSIZE * sizeof(double));
   double *V_aux = (double *)malloc(TOTALSIZE * sizeof(double));
+  /* 0.1. USING DOUBLE BUFFERING */
+  double *V_read = V;
+  double *V_write = V_aux;
 
   /* 1. INITIALIZE VECTOR */
   for (i = 0; i < TOTALSIZE; i++)
@@ -41,9 +44,6 @@ int main(int argc, char *argv[])
     V[i] = 0.0 + i;
   }
 
-  /* 1.1. USING DOUBLE BUFFERING */
-  double *V_read = V;
-  double *V_write = V_aux;
 
   /* 2. ITERATIONS LOOP */
   //* Can't put the diretive here since it will cause overhead and the program will be slower than serial version.
