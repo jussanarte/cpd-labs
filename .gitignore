@@ -12,6 +12,7 @@
 *.la
 *.lo
 
+
 # Shared objects (Linux/Windows/macOS)
 *.dll
 *.so

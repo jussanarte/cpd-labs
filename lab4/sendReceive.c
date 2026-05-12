@@ -7,7 +7,7 @@
 	Simple experience to understand the Message Passing Interface.
 
 	UPDATED BY: Jussana Paim
-	UPDATED AT: 2026-05-11
+	UPDATED AT: 2026-05-12
 */
 
 #include <stdio.h>
@@ -22,9 +22,11 @@ int main(int argc, char *argv[])
 	int id, p, i, rounds;
 	// Variável para medir o tempo gasto na comunicação
 	double secs;
+	//Tamanho da mensagem a ser enviada/recebida (1 MB)
+	long int msg_size = 1024 * 1024;
+	char *msg = (char *)malloc(msg_size * sizeof(char)); // Aloca memória para a mensagem
 
 	MPI_Init(&argc, &argv);
-
 	MPI_Comm_rank(MPI_COMM_WORLD, &id);
 	MPI_Comm_size(MPI_COMM_WORLD, &p);
 
@@ -48,14 +50,14 @@ int main(int argc, char *argv[])
 		if (!id)
 		{
 			// O processo 0 inicia a comunicação enviando uma mensagem para o processo 1
-			MPI_Send(&i, 1, MPI_INT, 1, i, MPI_COMM_WORLD);
-			MPI_Recv(&i, 1, MPI_INT, p - 1, i, MPI_COMM_WORLD, &status);
+			MPI_Send(msg, msg_size, MPI_CHAR, 1, i, MPI_COMM_WORLD);
+			MPI_Recv(msg, msg_size, MPI_CHAR, p - 1, i, MPI_COMM_WORLD, &status);
 		}
 		else
 		{
 			// Os processos intermediários recebem a mensagem do processo anterior e enviam para o próximo processo
-			MPI_Recv(&i, 1, MPI_INT, id - 1, i, MPI_COMM_WORLD, &status);
-			MPI_Send(&i, 1, MPI_INT, (id + 1) % p, i, MPI_COMM_WORLD);
+			MPI_Recv(msg, msg_size, MPI_CHAR, id - 1, i, MPI_COMM_WORLD, &status);
+			MPI_Send(msg, msg_size, MPI_CHAR, (id + 1) % p, i, MPI_COMM_WORLD);
 		}
 	}
 
@@ -66,11 +68,17 @@ int main(int argc, char *argv[])
 	// O processo 0 imprime o tempo gasto e a média por envio/recebimento
 	if (!id)
 	{
-		printf("Rounds= %d, N Processes = %d, Time = %12.6f sec,\n",
-			   rounds, p, secs);
-		printf("Average time per Send/Recv = %6.2f us\n",
-			   secs * 1e6 / (2 * rounds * p));
+		double total_hops = (double)rounds * p;
+        double avg_hop_time = secs / total_hops;
+        // Largura de banda: Tamanho da msg / tempo de um salto
+        double bandwidth = (msg_size / (1024.0 * 1024.0)) / avg_hop_time;
+
+		printf("Rounds = %d\nN Processes = %d\nTime = %.6f sec,\n", rounds, p, secs);
+		printf("Average time per Send/Recv = %6.2f us\n", secs * 1e6 / (2 * rounds * p));
+		printf("Average bandwidth = %6.2f MB/s\n", bandwidth);
+		printf("Average latency = %6.2f us\n", avg_hop_time * 1e6);
 	}
+	free(msg); // Libera a memória alocada para a mensagem
 	MPI_Finalize();
 	return 0;
 }
