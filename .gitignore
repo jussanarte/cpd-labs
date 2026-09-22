@@ -28,6 +28,18 @@ main
 *.x86_64
 *.hex
 
+# Executáveis específicos dos laboratórios (gerados via make)
+lab1/cpd-terminal/cpd-terminal
+lab1/cpd-terminal/fibonacci
+lab2/omp1
+lab2/omp2
+lab3/mult-sync
+lab3/mult-redux
+lab3/mult-good
+lab4/comp
+lab4/hello
+lab4/sendReceive
+
 ### --- DEBUG & PROFILING --- ###
 # Ficheiros de Debug e Core Dumps (Essencial para o teu trabalho com GDB)
 core
@@ -72,6 +84,9 @@ dkms.conf
 *~
 *.swp
 *.swo
+
+# AppleDouble (macOS/Dropbox)
+._*
 
 ### --- LOGS & TEMPS --- ###
 *.log

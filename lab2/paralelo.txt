@@ -1,3 +1,11 @@
+﻿RESUMO DAS EXECUCOES PARALELAS (antigos paralelo1-8.txt)
+Programa: omp2 (OpenMP, double buffering)
+Execucoes paralelas do programa omp2 com diferentes valores de OMP_NUM_THREADS.
+Todos os oito ficheiros tinham a mesma estrutura (1000 linhas "indice valor") e valores
+praticamente identicos; as pequenas diferencas nas casas decimais resultam da ordem das
+operacoes em virgula flutuante entre as threads.
+Segue a saida representativa (paralelo7.txt):
+
 Output:
    0 100.000000
    1 101.000000
